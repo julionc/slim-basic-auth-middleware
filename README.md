@@ -1,35 +1,57 @@
-# HTTP Basic Auth Middleware for Slim
+# Slim Framework HTTP Basic Auth
 
 HTTP Basic Authentication Middleware for Slim Framework.
 
-## Install
+[![Build Status](https://travis-ci.org/julionc/slim-basic-auth-middleware.svg?branch=master)](https://travis-ci.org/slimphp/Slim-Flash)
 
-Update your `composer.json` manifest to require the `julionc/slim-basic-auth-middleware` package (see below).
-Run `composer install` or `composer update` to update your local vendor folder.
-
-```javascript
-{
-    "require": {
-        "julionc/slim-basic-auth-middleware": "dev-master",
-    }
-}
-```
-
-## HttpBasic
-
-This will provide you with basic user Authentication based on username and password set.
+This repository contains a Slim Framework HTTP Basic Auth service provider.
+This enables you to define Rules that will provide you with basic user authentication based on username and password set.
 Also, Realm and Router name set.
 
-### How to use
+## Install
+
+Via Composer
+
+``` bash
+$ composer require julionc/slim-basic-auth-middleware
+```
+
+Requires Slim 3.0.0 or newer.
+
+## Usage
 
 ```php
-use \Slim\Slim;
-use \Slim\Middleware\HttpBasicAuth;
+$app = new \Slim\App();
 
-$app = new Slim();
-$app->add(new HttpBasicAuth('admin', 'admin', null, '/admin'));
+// Fetch DI Container
+$container = $app->getContainer();
+
+$basic_auth = new \Slim\HttpBasicAuth\Rule('admin', 'admin', null, '/admin');
+
+// Register provider
+$container->register($basic_auth);
+
+$app->get('/admin', function ($req, $res, $args) {
+    // Show dashboard
+});
+
+$app->get('/foo', function ($req, $res, $args) {
+    // Show custom page
+})->add($basic_auth);
+
+$app->run();
 ```
+
+## Testing
+
+``` bash
+$ phpunit
+```
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ## License
 
-MIT
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
