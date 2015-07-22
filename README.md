@@ -2,7 +2,7 @@
 
 HTTP Basic Authentication Middleware for Slim Framework.
 
-[![Build Status](https://travis-ci.org/julionc/slim-basic-auth-middleware.svg?branch=master)](https://travis-ci.org/slimphp/Slim-Flash)
+[![Build Status](https://travis-ci.org/julionc/slim-basic-auth-middleware.svg?branch=master)](https://travis-ci.org/julionc/slim-basic-auth-middleware)
 
 This repository contains a Slim Framework HTTP Basic Auth service provider.
 This enables you to define Rules that will provide you with basic user authentication based on username and password set.

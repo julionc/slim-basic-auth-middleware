@@ -18,19 +18,22 @@ use Pimple\ServiceProviderInterface;
  */
 class Rule implements ServiceProviderInterface
 {
-
     /**
-     * @param $username
-     * @param $password
+     * @param string $username
+     * @param string $password
      * @param string $route
      * @param string $realm
      */
-    public function __construct( $username, $password, $route = '', $realm = 'Protected Area' )
+    public function __construct( $username, $password, $route, $realm = 'Protected Area' )
     {
         $this->username = $username;
         $this->password = $password;
         $this->route    = $route;
         $this->realm    = $realm;
+
+        if ( ! isset( $this->password ) || empty( $this->password )) {
+            throw new RuntimeException( 'HttpBasicAuth middleware failed. Unable to guess password.' );
+        }
     }
 
     /**
@@ -58,8 +61,8 @@ class Rule implements ServiceProviderInterface
 
         if (false !== strpos( $uri->getPath(), $this->route )) {
 
-            $authUser = $request->getHeader( 'PHP_AUTH_USER' ) ?: null;
-            $authPass = $request->getHeader( 'PHP_AUTH_PW' ) ?: null;
+            $authUser = $request->getHeader( 'PHP_AUTH_USER' ) ? $request->getHeader( 'PHP_AUTH_USER' )[0] : null;
+            $authPass = $request->getHeader( 'PHP_AUTH_PW' ) ? $request->getHeader( 'PHP_AUTH_PW' )[0] : null;
 
             if ($authUser && $authPass && $authUser === $this->username && $authPass === $this->password) {
                 return $next( $request, $response );
