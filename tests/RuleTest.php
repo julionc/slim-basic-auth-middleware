@@ -1,5 +1,4 @@
 <?php
-
 namespace Slim\HttpBasicAuth\Tests;
 
 use Slim\Http\Body;
